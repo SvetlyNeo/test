@@ -10,34 +10,37 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            int numOfBags;
-            Console.WriteLine("Сколько мешков сахара в магазине?");
-            numOfBags = Convert.ToInt32(Console.ReadLine());
-
-            int[] arrayOfMass = new int[numOfBags];
+            int k;
+            var listOfMass = new List<int>();
             Console.WriteLine("Укажите массы мешков с сахаром.");
-            for (int i = 0; i < numOfBags; i++)
+            string inputData = Console.ReadLine().ToString();
+            foreach (var n in inputData.Split(';', ',', '\n', '\r', '\t'))
             {
-                arrayOfMass[i] = Convert.ToInt32(Console.ReadLine());
+                int.TryParse(n, out k);
+                
+                listOfMass.Add(k);
             }
 
             int N;
             Console.Write("Сколько кг сахара вы хотите купить?: ");
-            N = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Подходят мешки с инедексом {0} {1}",CheckBags(arrayOfMass, N)[0], CheckBags(arrayOfMass, N)[1]);
+            int.TryParse(Console.ReadLine(), out N);
+            foreach (var l in CheckBags(listOfMass, N))
+            {
+                Console.WriteLine("Подходят мешки с индексами: {0}", l);
+            }
 
             Console.ReadLine();
         }
 
-        public static int[] CheckBags(int[] array, int n)
+        public static List<string> CheckBags(List<int> list, int n)
         {
-            for (int i = 0; i < array.Length; i++)
-                for (int j = i + 1; j < array.Length; j++)
-                    if (array[i] + array[j] == n)
-                        return new int[] { i, j };
+            var lststr = new List<string>();
+            for (int i = 0; i < list.Count; i++)
+                for (int j = i + 1; j < list.Count; j++)
+                    if (list[i] + list[j] == n)
+                        lststr.Add(i + "," + j);
 
-            return new int[0];
+            return lststr;
         }
     }
 }
